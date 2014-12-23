@@ -19,7 +19,7 @@ And [cakephp 2.5.6] are placed in /var/www/
 - Go to downloaded repository's directory.
 - Put command "chmod -R 777 ./app/tmp"
 - Put command "vagrant up"
-- Start browser and go to "http://192.168.33.10/cakephp_site/"
+- Start browser and go to "http://192.168.33.10/livdesn/"
 
 If you use file management by git. Please put this command to remove unmanaged files like "app/tmp".
 git rm --cached `git ls-files --full-name -i --exclude-from=.gitignore`
