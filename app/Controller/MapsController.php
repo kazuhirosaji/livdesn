@@ -41,6 +41,30 @@ class MapsController extends AppController {
 		$this->set('map', $this->Map->find('first', $options));
 	}
 
+
+	public function saveImageFile() {
+		$options = array(
+			'fields' => 'id',
+			'conditions' => array('and' => array(
+				'Map.title' => $this->request->data['Map']['title'],
+				'Map.user_id' => $this->request->data['Map']['user_id']
+			)
+		));
+		$newId = $this->Map->find('first', $options);
+		$imageName = $newId['Map']['id'];
+
+		$dest_fullpath = IMAGES . "maps/" . $imageName;
+
+		$file = $this->request->data['Map']['file'];
+		$res = move_uploaded_file($file['tmp_name'], $dest_fullpath);
+		if ($res) {
+			chmod($dest_fullpath, 0666);
+		}
+
+		$saveImage = array('Map' => array('imagename' => $imageName));
+		return $this->Map->save($saveImage);
+	}
+
 /**
  * add method
  *
@@ -49,7 +73,7 @@ class MapsController extends AppController {
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->Map->create();
-			if ($this->Map->save($this->request->data)) {
+			if ($this->Map->save($this->request->data) && $this->saveImageFile()) {
 				$this->Session->setFlash(__('The map has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
