@@ -98,6 +98,16 @@ class MapsController extends AppController {
 			throw new NotFoundException(__('Invalid map'));
 		}
 		if ($this->request->is(array('post', 'put'))) {
+			if (isset($this->request->data['Map']['file']) && $this->request->data['Map']['file']['size'] > 0) {
+				$this->deleteImage($id);
+				$file = $this->request->data['Map']['file'];
+				$dest_fullpath = IMAGES . "maps/" . $id;
+				$res = move_uploaded_file($file['tmp_name'], $dest_fullpath);
+				if ($res) {
+					chmod($dest_fullpath, 0666);
+				}
+				$this->request->data['Map']['imagename'] = $this->request->data['Map']['id'];
+			}
 			if ($this->Map->save($this->request->data)) {
 				$this->Session->setFlash(__('The map has been saved.'));
 				return $this->redirect(array('action' => 'index'));
@@ -113,6 +123,23 @@ class MapsController extends AppController {
 		$users = $this->Map->User->find('list');
 		$this->set(compact('users', 'themes', 'users'));
 	}
+
+/**
+ * delete image method
+ *
+ * @param string $id
+ * @return void
+ */
+	public function deleteImage($id) {
+		if (!isset($id)) {
+			return;
+		}
+		$dest_fullpath = IMAGES . "maps/" . $id;
+		if(file_exists($dest_fullpath)) {
+			unlink($dest_fullpath);
+		}
+	}
+
 
 /**
  * delete method
