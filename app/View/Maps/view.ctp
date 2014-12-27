@@ -26,9 +26,17 @@
 			<?php echo $this->Html->link($map['Theme']['title'], array('controller' => 'themes', 'action' => 'view', $map['Theme']['id'])); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Imagename'); ?></dt>
+		<dt><?php echo __('Image'); ?></dt>
 		<dd>
-			<?php echo h($map['Map']['imagename']); ?>
+			<?php
+				$imagename = h($map['Map']['imagename']);
+				if (strlen($imagename) > 0 && file_exists("./img/maps/". $imagename )): 
+			?>
+				<td><?php echo $this->Html->image(h("maps/". $map['Map']['imagename']), 
+					array('alt' => 'Image file')); ?>&nbsp;</td>
+			<?php else: ?>
+				<td><?php echo $this->Html->image("NoImage.png", array('alt' => 'Image file')); ?>&nbsp;</td>
+			<?php endif ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Created'); ?></dt>
