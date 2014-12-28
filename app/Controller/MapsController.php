@@ -76,8 +76,8 @@ class MapsController extends AppController {
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if (isset($this->request->data['Map']['file']) && $this->request->data['Map']['file']['size'] > 0) {
-				$this->Map->updateImageFile($id, $this->request->data);
-				$this->request->data['Map']['imagename'] = $this->request->data['Map']['id'];
+				$new_imagename = $this->Map->updateImageFile($id, $this->request->data);
+				$this->request->data['Map']['imagename'] = $new_imagename;
 			}
 			if ($this->Map->save($this->request->data)) {
 				$this->Session->setFlash(__('The map has been saved.'));
@@ -108,9 +108,10 @@ class MapsController extends AppController {
 			throw new NotFoundException(__('Invalid map'));
 		}
 		$this->request->allowMethod('post', 'delete');
+		$imagename = $this->Map->getImageName($id);
 		if ($this->Map->delete()) {
 			$this->Session->setFlash(__('The map has been deleted.'));
-			$this->Map->deleteImageFile($id);
+			$this->Map->deleteImageFile($imagename);
 		} else {
 			$this->Session->setFlash(__('The map could not be deleted. Please, try again.'));
 		}

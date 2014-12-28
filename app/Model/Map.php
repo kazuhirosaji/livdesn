@@ -126,6 +126,25 @@ class Map extends AppModel {
  */
 	public $image_folder = 'maps/';
 
+
+/**
+ * get imagename from id
+ *
+ * @param string $id
+ * @return void
+ */
+	public function getImageName($id) {
+		if (!isset($id)) {
+			return null;
+		}
+		$options = array(
+			'fields' => 'Map.imagename',
+			'conditions' => array('Map.id' => $id)
+			);
+		$item = $this->find('first', $options);
+		return $item[get_class()]['imagename'];
+	}
+
 /**
  * save image data function
  *
@@ -134,17 +153,9 @@ class Map extends AppModel {
  *
  */
 	public function saveImageFile($data) {
-		$options = array(
-			'fields' => 'id',
-			'conditions' => array('and' => array(
-				'Map.title' => $data[get_class()]['title'],
-				'Map.user_id' => $data[get_class()]['user_id']
-			)
-		));
-		$newId = $this->find('first', $options);
-		$imageName = $newId[get_class()]['id'];
+		$imagename = md5(uniqid());
 
-		$dest_fullpath = IMAGES . $this->image_folder . $imageName;
+		$dest_fullpath = IMAGES . $this->image_folder . $imagename;
 
 		$file = $data[get_class()]['file'];
 		$res = move_uploaded_file($file['tmp_name'], $dest_fullpath);
@@ -152,21 +163,18 @@ class Map extends AppModel {
 			chmod($dest_fullpath, 0666);
 		}
 
-		$saveImage = array(get_class() => array('imagename' => $imageName));
+		$saveImage = array(get_class() => array('imagename' => $imagename));
 		return $this->save($saveImage);
 	}
 
 /**
  * delete image data function
  *
- * @param string $id
+ * @param string $imagename : delete image name
  * @return void
  */
-	public function deleteImageFile($id) {
-		if (!isset($id)) {
-			return;
-		}
-		$dest_fullpath = IMAGES . $this->image_folder . $id;
+	public function deleteImageFile($imagename) {
+		$dest_fullpath = IMAGES . $this->image_folder . $imagename;
 		if(file_exists($dest_fullpath)) {
 			unlink($dest_fullpath);
 		}
@@ -177,16 +185,19 @@ class Map extends AppModel {
  *
  * @param string $id
  * @param array $data requested data array
- * @return void
+ * @return string $new_imagename
  */
 	public function updateImageFile($id, $data) {
-		$this->deleteImageFile($id);
+		$delete_imagename = $this->getImageName($id);
+		$this->deleteImageFile($delete_imagename);
 		$file = $data[get_class()]['file'];
-		$dest_fullpath = IMAGES . $this->image_folder . $id;
+		$new_imagename = md5(uniqid());
+		$dest_fullpath = IMAGES . $this->image_folder . $new_imagename;
 		$res = move_uploaded_file($file['tmp_name'], $dest_fullpath);
 		if ($res) {
 			chmod($dest_fullpath, 0666);
 		}
+		return $new_imagename;
 	}
 
 
