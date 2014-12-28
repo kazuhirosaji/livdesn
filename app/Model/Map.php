@@ -172,4 +172,22 @@ class Map extends AppModel {
 		}
 	}
 
+/**
+ * update image data function
+ *
+ * @param string $id
+ * @param array $data requested data array
+ * @return void
+ */
+	public function updateImageFile($id, $data) {
+		$this->deleteImageFile($id);
+		$file = $data[get_class()]['file'];
+		$dest_fullpath = IMAGES . $this->image_folder . $id;
+		$res = move_uploaded_file($file['tmp_name'], $dest_fullpath);
+		if ($res) {
+			chmod($dest_fullpath, 0666);
+		}
+	}
+
+
 }

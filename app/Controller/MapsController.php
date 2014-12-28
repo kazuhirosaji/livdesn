@@ -76,13 +76,7 @@ class MapsController extends AppController {
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if (isset($this->request->data['Map']['file']) && $this->request->data['Map']['file']['size'] > 0) {
-				$this->Map->deleteImageFile($id);
-				$file = $this->request->data['Map']['file'];
-				$dest_fullpath = IMAGES . "maps/" . $id;
-				$res = move_uploaded_file($file['tmp_name'], $dest_fullpath);
-				if ($res) {
-					chmod($dest_fullpath, 0666);
-				}
+				$this->Map->updateImageFile($id, $this->request->data);
 				$this->request->data['Map']['imagename'] = $this->request->data['Map']['id'];
 			}
 			if ($this->Map->save($this->request->data)) {
