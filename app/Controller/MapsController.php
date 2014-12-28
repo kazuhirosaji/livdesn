@@ -42,29 +42,6 @@ class MapsController extends AppController {
 	}
 
 
-	public function saveImageFile() {
-		$options = array(
-			'fields' => 'id',
-			'conditions' => array('and' => array(
-				'Map.title' => $this->request->data['Map']['title'],
-				'Map.user_id' => $this->request->data['Map']['user_id']
-			)
-		));
-		$newId = $this->Map->find('first', $options);
-		$imageName = $newId['Map']['id'];
-
-		$dest_fullpath = IMAGES . "maps/" . $imageName;
-
-		$file = $this->request->data['Map']['file'];
-		$res = move_uploaded_file($file['tmp_name'], $dest_fullpath);
-		if ($res) {
-			chmod($dest_fullpath, 0666);
-		}
-
-		$saveImage = array('Map' => array('imagename' => $imageName));
-		return $this->Map->save($saveImage);
-	}
-
 /**
  * add method
  *
@@ -73,7 +50,7 @@ class MapsController extends AppController {
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->Map->create();
-			if ($this->Map->save($this->request->data) && $this->saveImageFile()) {
+			if ($this->Map->save($this->request->data) && $this->Map->saveImageFile($this->request->data)) {
 				$this->Session->setFlash(__('The map has been saved.'));
 				return $this->redirect(array('action' => 'index'));
 			} else {
@@ -99,7 +76,7 @@ class MapsController extends AppController {
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if (isset($this->request->data['Map']['file']) && $this->request->data['Map']['file']['size'] > 0) {
-				$this->deleteImage($id);
+				$this->Map->deleteImageFile($id);
 				$file = $this->request->data['Map']['file'];
 				$dest_fullpath = IMAGES . "maps/" . $id;
 				$res = move_uploaded_file($file['tmp_name'], $dest_fullpath);
@@ -125,23 +102,6 @@ class MapsController extends AppController {
 	}
 
 /**
- * delete image method
- *
- * @param string $id
- * @return void
- */
-	public function deleteImage($id) {
-		if (!isset($id)) {
-			return;
-		}
-		$dest_fullpath = IMAGES . "maps/" . $id;
-		if(file_exists($dest_fullpath)) {
-			unlink($dest_fullpath);
-		}
-	}
-
-
-/**
  * delete method
  *
  * @throws NotFoundException
@@ -156,7 +116,7 @@ class MapsController extends AppController {
 		$this->request->allowMethod('post', 'delete');
 		if ($this->Map->delete()) {
 			$this->Session->setFlash(__('The map has been deleted.'));
-			$this->deleteImage($id);
+			$this->Map->deleteImageFile($id);
 		} else {
 			$this->Session->setFlash(__('The map could not be deleted. Please, try again.'));
 		}

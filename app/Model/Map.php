@@ -119,4 +119,57 @@ class Map extends AppModel {
 		)
 	);
 
+/**
+ * Image folder name
+ *
+ * @var string
+ */
+	public $image_folder = 'maps/';
+
+/**
+ * save image data function
+ *
+ * @param array $data requested data array
+ * @return mixed On success Model::$data if its not empty or true, false on failure
+ *
+ */
+	public function saveImageFile($data) {
+		$options = array(
+			'fields' => 'id',
+			'conditions' => array('and' => array(
+				'Map.title' => $data[get_class()]['title'],
+				'Map.user_id' => $data[get_class()]['user_id']
+			)
+		));
+		$newId = $this->find('first', $options);
+		$imageName = $newId[get_class()]['id'];
+
+		$dest_fullpath = IMAGES . $this->image_folder . $imageName;
+
+		$file = $data[get_class()]['file'];
+		$res = move_uploaded_file($file['tmp_name'], $dest_fullpath);
+		if ($res) {
+			chmod($dest_fullpath, 0666);
+		}
+
+		$saveImage = array(get_class() => array('imagename' => $imageName));
+		return $this->save($saveImage);
+	}
+
+/**
+ * delete image data function
+ *
+ * @param string $id
+ * @return void
+ */
+	public function deleteImageFile($id) {
+		if (!isset($id)) {
+			return;
+		}
+		$dest_fullpath = IMAGES . $this->image_folder . $id;
+		if(file_exists($dest_fullpath)) {
+			unlink($dest_fullpath);
+		}
+	}
+
 }
