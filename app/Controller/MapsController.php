@@ -156,6 +156,7 @@ class MapsController extends AppController {
 		$this->request->allowMethod('post', 'delete');
 		if ($this->Map->delete()) {
 			$this->Session->setFlash(__('The map has been deleted.'));
+			$this->deleteImage($id);
 		} else {
 			$this->Session->setFlash(__('The map could not be deleted. Please, try again.'));
 		}
