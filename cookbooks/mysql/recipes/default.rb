@@ -28,6 +28,14 @@ template "/tmp/grants.sql" do
   notifies :run, "execute[mysql-create-user]", :immediately
 end
 
+template "/etc/mysql/my.cnf" do
+    source "my.cnf.erb"
+    mode 0644
+    owner "root"
+    group "root"
+    notifies :restart, "service[mysql]", :immediately
+end
+
 execute "mysql-create-user" do
   command "mysql -u root --password=\"#{node['mysql']['db']['rootpass']}\"  < /tmp/grants.sql"
 end
