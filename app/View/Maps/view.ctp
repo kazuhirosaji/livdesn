@@ -51,19 +51,7 @@
 		</dd>
 	</dl>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Map'), array('action' => 'edit', $map['Map']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Map'), array('action' => 'delete', $map['Map']['id']), array(), __('Are you sure you want to delete # %s?', $map['Map']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Maps'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Map'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New User'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Themes'), array('controller' => 'themes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Theme'), array('controller' => 'themes', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
+
 <div class="related">
 	<h3><?php echo __('Related Users'); ?></h3>
 	<?php if (!empty($map['User'])): ?>
