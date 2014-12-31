@@ -1,6 +1,7 @@
 <div class="maps">
 	<h2><?php echo __('Maps'); ?></h2>
 	<table class="table table-striped">
+	<thead>
 	<tr>
 			<th><?php echo $this->Paginator->sort('id'); ?></th>
 			<th><?php echo $this->Paginator->sort('title'); ?></th>
@@ -12,6 +13,8 @@
 			<th><?php echo $this->Paginator->sort('modified'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
+	</thead>
+	<tbody>
 	<?php foreach ($maps as $map): ?>
 	<tr>
 		<td><?php echo h($map['Map']['id']); ?>&nbsp;</td>
@@ -41,5 +44,6 @@
 		</td>
 	</tr>
 <?php endforeach; ?>
+	</tbody>
 	</table>
 </div>
