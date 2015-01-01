@@ -16,9 +16,7 @@
 		<td><?php echo h($theme['Theme']['title']); ?>&nbsp;</td>
 		<td><?php echo h($theme['Theme']['description']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $theme['Theme']['id']), array('class' => 'btn btn-mini')); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $theme['Theme']['id']), array('class' => 'btn btn-mini')); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $theme['Theme']['id']), array('class' => 'btn btn-mini'), __('Are you sure you want to delete # %s?', $theme['Theme']['id'])); ?>
+			<?php echo $this->element('button_actions', array("target_id" => $theme['Theme']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

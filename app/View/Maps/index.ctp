@@ -38,9 +38,7 @@
 		<td><?php echo h($map['Map']['created']); ?>&nbsp;</td>
 		<td><?php echo h($map['Map']['modified']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $map['Map']['id']), array('class' => 'btn btn-mini')); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $map['Map']['id']), array('class' => 'btn btn-mini')); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $map['Map']['id']), array('class' => 'btn btn-mini'), __('Are you sure you want to delete # %s?', $map['Map']['id'])); ?>
+			<?php echo $this->element('button_actions', array("target_id" => $map['Map']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
