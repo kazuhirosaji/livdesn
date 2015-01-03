@@ -62,15 +62,17 @@
 		<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($map['User'] as $user): ?>
-		<tr>
-			<td><?php echo $user['id']; ?></td>
-			<td><?php echo $user['name']; ?></td>
-			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'users', 'action' => 'view', $user['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'users', 'action' => 'edit', $user['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'users', 'action' => 'delete', $user['id']), array(), __('Are you sure you want to delete # %s?', $user['id'])); ?>
-			</td>
-		</tr>
+		<?php if (is_array($user['MapsUser'])): ?>
+			<tr>
+				<td><?php echo $user['id']; ?></td>
+				<td><?php echo $user['name']; ?></td>
+				<td class="actions">
+					<?php echo $this->Html->link(__('View'), array('controller' => 'users', 'action' => 'view', $user['id'])); ?>
+					<?php echo $this->Html->link(__('Edit'), array('controller' => 'users', 'action' => 'edit', $user['id'])); ?>
+					<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'users', 'action' => 'delete', $user['id']), array(), __('Are you sure you want to delete # %s?', $user['id'])); ?>
+				</td>
+			</tr>
+		<?php endif; ?>
 	<?php endforeach; ?>
 	</table>
 <?php endif; ?>
