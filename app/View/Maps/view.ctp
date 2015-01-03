@@ -1,3 +1,16 @@
+<!-- create voted users array -->
+<?php 
+	$mapsusers = array();
+	if (!empty($map['User'])) {
+		foreach ($map['User'] as $user) {
+			if (is_array($user['MapsUser'])) {
+				$mapsusers[] = $user;
+			}
+		}
+	}
+?>
+
+<!-- display maps view -->
 <div class="maps view">
 <h2><?php echo __('Map'); ?></h2>
 	<dl>
@@ -39,6 +52,19 @@
 			<?php endif ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('Vote'); ?></dt>
+		<dd>
+			<div class="btn-group">
+				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+					<?php echo count($mapsusers) . " voted users" ?>    
+				</a>
+				<ul class="dropdown-menu">
+				<?php foreach ($mapsusers as $user): ?>
+					<li><?php echo $this->Html->link($user['name'], array('controller' => 'Users', 'action' => 'view', $user['id'])); ?></li>
+				<?php endforeach; ?>
+				</ul>
+			</div>
+		</dd>
 		<dt><?php echo __('Created'); ?></dt>
 		<dd>
 			<?php echo h($map['Map']['created']); ?>
@@ -51,25 +77,3 @@
 		</dd>
 	</dl>
 </div>
-
-<div class="related">
-	<?php 
-	if (!empty($map['User'])) {
-		$mapsusers = array();
-		foreach ($map['User'] as $user) {
-			if (is_array($user['MapsUser'])) {
-				$mapsusers[] = $user;
-			}
-		}
-	}
-	if (!empty($mapsusers)):
-	?>
-	<h3><?php echo count($mapsusers) . " voted users" ?></h3>
-	<?php
-		foreach ($mapsusers as $user) {
-			echo $this->Html->link($user['name'], array('controller' => 'Users', 'action' => 'view', $user['id']), array('class' => 'label'));
-		}
-	?>
-	<?php endif; ?>
-</div>
-<BR><BR>
