@@ -53,33 +53,23 @@
 </div>
 
 <div class="related">
-	<h3><?php echo __('Related Users'); ?></h3>
-	<?php if (!empty($map['User'])): ?>
-	<table class="table table-striped">
-	<tr>
-		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Name'); ?></th>
-		<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
-	<?php foreach ($map['User'] as $user): ?>
-		<?php if (is_array($user['MapsUser'])): ?>
-			<tr>
-				<td><?php echo $user['id']; ?></td>
-				<td><?php echo $user['name']; ?></td>
-				<td class="actions">
-					<?php echo $this->Html->link(__('View'), array('controller' => 'users', 'action' => 'view', $user['id'])); ?>
-					<?php echo $this->Html->link(__('Edit'), array('controller' => 'users', 'action' => 'edit', $user['id'])); ?>
-					<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'users', 'action' => 'delete', $user['id']), array(), __('Are you sure you want to delete # %s?', $user['id'])); ?>
-				</td>
-			</tr>
-		<?php endif; ?>
-	<?php endforeach; ?>
-	</table>
-<?php endif; ?>
-
-	<div class="actions">
-		<ul>
-			<li><?php echo $this->Html->link(__('New User'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-		</ul>
-	</div>
+	<?php 
+	if (!empty($map['User'])) {
+		$mapsusers = array();
+		foreach ($map['User'] as $user) {
+			if (is_array($user['MapsUser'])) {
+				$mapsusers[] = $user;
+			}
+		}
+	}
+	if (!empty($mapsusers)):
+	?>
+	<h3><?php echo count($mapsusers) . " voted users" ?></h3>
+	<?php
+		foreach ($mapsusers as $user) {
+			echo $this->Html->link($user['name'], array('controller' => 'Users', 'action' => 'view', $user['id']), array('class' => 'label'));
+		}
+	?>
+	<?php endif; ?>
 </div>
+<BR><BR>
