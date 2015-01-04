@@ -9,6 +9,7 @@
 			<th><?php echo $this->Paginator->sort('user_id'); ?></th>
 			<th><?php echo $this->Paginator->sort('theme_id'); ?></th>
 			<th>image</th>
+			<th>vote</th>
 			<th><?php echo $this->Paginator->sort('created'); ?></th>
 			<th><?php echo $this->Paginator->sort('modified'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
@@ -35,6 +36,28 @@
 		<?php else: ?>
 			<td><?php echo $this->Html->image("NoImage.png", array('alt' => 'Image file')); ?>&nbsp;</td>
 		<?php endif ?>
+		<td>
+			<?php 
+				$mapsusers = array();
+				if (!empty($map['User'])) {
+					foreach ($map['User'] as $user) {
+						if (is_array($user['MapsUser'])) {
+							$mapsusers[] = $user;
+						}
+					}
+				}
+			?>
+			<div class="btn-group">
+				<a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+					<?php echo count($mapsusers) . " voted" ?>    
+				</a>
+				<ul class="dropdown-menu">
+				<?php foreach ($mapsusers as $user): ?>
+					<li><?php echo $this->Html->link($user['name'], array('controller' => 'Users', 'action' => 'view', $user['id'])); ?></li>
+				<?php endforeach; ?>
+				</ul>
+			</div>
+		</td>
 		<td>
 			<?php
 				if (!empty($map['Map']['created'])) {

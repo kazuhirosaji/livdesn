@@ -22,7 +22,6 @@ class MapsController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Map->recursive = 0;
 		$this->set('maps', $this->Paginator->paginate());
 	}
 
