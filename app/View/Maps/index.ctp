@@ -35,8 +35,24 @@
 		<?php else: ?>
 			<td><?php echo $this->Html->image("NoImage.png", array('alt' => 'Image file')); ?>&nbsp;</td>
 		<?php endif ?>
-		<td><?php echo h($map['Map']['created']); ?>&nbsp;</td>
-		<td><?php echo h($map['Map']['modified']); ?>&nbsp;</td>
+		<td>
+			<?php
+				if (!empty($map['Map']['created'])) {
+					$created = new DateTime(h($map['Map']['created']));
+					echo date_format($created, 'Y-m-d');
+				}
+			?>
+			&nbsp;
+		</td>
+		<td>
+			<?php
+				if (!empty($map['Map']['modified'])) {
+					$modified = new DateTime(h($map['Map']['modified']));
+					echo date_format($modified, 'Y-m-d');
+				}
+			?>
+			&nbsp;
+		</td>
 		<td class="actions">
 			<?php echo $this->element('button_actions', array("target_id" => $map['Map']['id'])); ?>
 		</td>
