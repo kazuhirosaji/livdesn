@@ -54,16 +54,7 @@
 		</dd>
 		<dt><?php echo __('Vote'); ?></dt>
 		<dd>
-			<div class="btn-group">
-				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-					<?php echo count($mapsusers) . " voted users" ?>    
-				</a>
-				<ul class="dropdown-menu">
-				<?php foreach ($mapsusers as $user): ?>
-					<li><?php echo $this->Html->link($user['name'], array('controller' => 'Users', 'action' => 'view', $user['id'])); ?></li>
-				<?php endforeach; ?>
-				</ul>
-			</div>
+			<?php echo $this->element('voted_users', array("mapsusers" => $mapsusers)); ?>
 		</dd>
 		<dt><?php echo __('Created'); ?></dt>
 		<dd>
