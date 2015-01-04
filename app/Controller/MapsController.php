@@ -37,7 +37,17 @@ class MapsController extends AppController {
 			throw new NotFoundException(__('Invalid map'));
 		}
 		$options = array('conditions' => array('Map.' . $this->Map->primaryKey => $id));
-		$this->set('map', $this->Map->find('first', $options));
+		$map = $this->Map->find('first', $options);
+
+		$mapsusers = array();
+		if (!empty($map['User'])) {
+			foreach ($map['User'] as $user) {
+				if (is_array($user['MapsUser'])) {
+					$mapsusers[] = $user;
+				}
+			}
+		}
+		$this->set(compact('map', 'mapsusers'));
 	}
 
 

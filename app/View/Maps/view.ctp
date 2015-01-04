@@ -1,16 +1,3 @@
-<!-- create voted users array -->
-<?php 
-	$mapsusers = array();
-	if (!empty($map['User'])) {
-		foreach ($map['User'] as $user) {
-			if (is_array($user['MapsUser'])) {
-				$mapsusers[] = $user;
-			}
-		}
-	}
-?>
-
-<!-- display maps view -->
 <div class="maps view">
 <h2><?php echo __('Map'); ?></h2>
 	<dl>
